@@ -1,0 +1,25 @@
+{
+  "name": "cover-trello-api",
+  "version": "1.0.0",
+  "description": "APIs for trello app",
+  "main": "src/server/js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quoc2721/cover-trello-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quoc2721/cover-trello-api/issues"
+  },
+  "homepage": "https://github.com/quoc2721/cover-trello-api#readme",
+  "dependencies": {
+    "eslint": "^8.20.0",
+    "express": "^4.18.1"
+  }
+}
