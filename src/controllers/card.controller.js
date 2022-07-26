@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "../utilities/constants.js";
-import { BoardService } from "../services/board.services.js";
+import { CardService } from "../services/card.services.js";
 
 const craeteNew = async (req, res) => {
   try {
-    const result = await BoardService.craeteNew(req.body);
+    const result = await CardService.craeteNew(req.body);
     res.status(HttpStatusCode.OK).json(result);
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -12,4 +12,4 @@ const craeteNew = async (req, res) => {
   }
 };
 
-export const BoardController = { craeteNew };
+export const CardController = { craeteNew };
