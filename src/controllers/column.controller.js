@@ -3,7 +3,7 @@ import { ColumnService } from "../services/column.services.js";
 
 const craeteNew = async (req, res) => {
   try {
-    const result = await ColumnService.craeteNew(req.body);
+    const result = await ColumnService.createNew(req.body);
     res.status(HttpStatusCode.OK).json(result);
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
