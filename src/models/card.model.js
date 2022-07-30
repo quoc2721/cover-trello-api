@@ -36,13 +36,32 @@ const createNew = async (data) => {
 
 const getCardId = async (cardId) => {
   try {
-    const result = await getDB().collection(cardCollectionName).findOne(
-      { _id: cardId}
-    )
-    return result
+    const result = await getDB()
+      .collection(cardCollectionName)
+      .findOne({ _id: cardId });
+    return result;
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
-}
+};
 
-export const CardModel = { createNew, getCardId, cardCollectionName };
+const deleteMany = async (ids) => {
+  try {
+    const transformIds = ids.map((i) => ObjectId(i));
+    const result = await getDB()
+      .collection(cardCollectionName)
+      .updateMany(
+        { _id: { $in: transformIds } },
+        {
+          $set: {
+            _destroy: true,
+          },
+        }
+      );
+      return result;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const CardModel = { createNew, getCardId, cardCollectionName, deleteMany };
