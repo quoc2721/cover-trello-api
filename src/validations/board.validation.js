@@ -18,7 +18,7 @@ const craeteNew = async (req, res, next) => {
 const update = async (req, res, next) => {
   const condition = Joi.object({
     title: Joi.string().min(3).max(20).trim(),
-  columnOrder: Joi.array().items(Joi.string()).default([]),
+    columnOrder: Joi.array().items(Joi.string()),
   });
   try {
     await condition.validateAsync(req.body, {

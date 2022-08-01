@@ -2,7 +2,7 @@ import express from "express";
 import { connectDB } from "./config/mongoDB.js";
 import { env } from "./config/environtment.js";
 import { apiV1 } from "./routers/v1/index.js";
-import cors from 'cors';
+import cors from "cors";
 
 connectDB()
   .then(() => console.log("Connected successfuly to database server!"))
@@ -14,11 +14,18 @@ connectDB()
 const bootServer = () => {
   const app = express();
 
+  const WHITELIST_DOMAINS = ["http://localhost:3000", "http://localhost:3001"];
   var corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200 
-  }
-  app.use(cors(corsOptions))
+    origin: function (origin, callback) {
+      if (WHITELIST_DOMAINS.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error(`${origin}Not allowed by CORS`));
+      }
+    },
+    optionsSuccessStatus: 200,
+  };
+  app.use(cors(corsOptions));
 
   app.use(express.json());
 
