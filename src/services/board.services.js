@@ -1,10 +1,11 @@
 import { BoardModel } from "../models/board.model.js";
-import cloneDeep from 'lodash';
+import  cloneDeep  from "lodash";
 
 const craeteNew = async (data) => {
   try {
-    const result = await BoardModel.createNew(data);
-    return result;
+    const createNewBoard = await BoardModel.createNew(data);
+    const getNewBoard = await BoardModel.findOneById(createNewBoard.insertedId.toString())
+    return getNewBoard;
   } catch (error) {
     throw new Error(error);
   }
@@ -18,16 +19,20 @@ const getFullBoard = async (boardId ) => {
       throw new Error("Board not Found!")
     }
 
-    const transformBoard = cloneDeep(board)
+    // const transformBoard = cloneDeep(board)
 
-    transformBoard.columns = transformBoard.columns.filter(column => !column._destroy)
+    // transformBoard.columns = transformBoard.columns.filter(column => !column._destroy)
 
-    transformBoard.columns.forEach(column => {
-      column.cards = transformBoard.cards.filter(c => c.columnId.toString() === column._id.toString())
+    // transformBoard.columns.forEach(column => {
+    //   column.cards = transformBoard.cards.filter(c => c.columnId.toString() === column._id.toString())
+    // })
+
+    board.columns.forEach(column => {
+      column.cards = board.cards.filter(c => c.columnId.toString() === column._id.toString())
     })
     // Remove card data from boards
-    delete transformBoard.cards
-    return transformBoard;
+    delete board.cards
+    return board;
   } catch (error) {
     throw new Error(error);
   }

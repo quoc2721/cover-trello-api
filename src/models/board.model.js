@@ -17,6 +17,16 @@ const validateSchema = async (data) => {
   return await boardCollectionSchema.validateAsync(data, { abortEarly: false });
 };
 
+
+const findOneById = async (id) => {
+  try {
+    const result = await getDB().collection(boardCollectionName).findOne({ _id: ObjectId(id)})
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 const createNew = async (data) => {
   try {
     const value = await validateSchema(data);
@@ -32,13 +42,14 @@ const createNew = async (data) => {
 const update = async (id, data) => {
   try {
     const updateData = { ...data };
+    // if (data.boardId) updateData.boardId = ObjectId(data.boardId);
 
     const result = await getDB()
       .collection(boardCollectionName)
       .findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: updateData },
-        { returnOriginal: false }
+        { returnDocument: 'after'}
       );
     return result.value;
   } catch (error) {
@@ -56,9 +67,9 @@ const pushColumnOrder = async (boardId, columnId) => {
     const result = await getDB()
       .collection(boardCollectionName)
       .findOneAndUpdate(
-        { _id: ObjectId(boardId) },
+        { _id: boardId },
         { $push: { columnOrder: columnId } },
-        { upsert: true, retunrNewDocument: true }
+        { returnDocument: 'after'}
       );
     return result.value;
   } catch (error) {
@@ -101,4 +112,10 @@ const getFullBoard = async (boardId) => {
   }
 };
 
-export const BoardModel = { createNew, getFullBoard, pushColumnOrder, update };
+export const BoardModel = { 
+  createNew, 
+  getFullBoard, 
+  pushColumnOrder, 
+  update, 
+  findOneById 
+};

@@ -17,6 +17,15 @@ const validateSchema = async (data) => {
   return await cardCollectionSchema.validateAsync(data, { abortEarly: false });
 };
 
+const findOneById = async (id) => {
+  try {
+    const result = await getDB().collection(cardCollectionName).findOne({ _id: ObjectId(id)})
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 const createNew = async (data) => {
   try {
     const validatedValue = await validateSchema(data);
@@ -34,16 +43,16 @@ const createNew = async (data) => {
   }
 };
 
-const getCardId = async (cardId) => {
-  try {
-    const result = await getDB()
-      .collection(cardCollectionName)
-      .findOne({ _id: cardId });
-    return result;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
+// const getCardId = async (cardId) => {
+//   try {
+//     const result = await getDB()
+//       .collection(cardCollectionName)
+//       .findOne({ _id: cardId });
+//     return result;
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// };
 
 const deleteMany = async (ids) => {
   try {
@@ -75,7 +84,7 @@ const update = async (id, data) => {
       .findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: updateData },
-        { returnOriginal: false }
+        { returnDocument: 'after'}
       );
     return result.value;
   } catch (error) {
@@ -83,4 +92,11 @@ const update = async (id, data) => {
   }
 };
 
-export const CardModel = { createNew, getCardId, cardCollectionName, deleteMany, update };
+export const CardModel = { 
+  createNew, 
+  // getCardId, 
+  cardCollectionName, 
+  deleteMany, 
+  update,
+  findOneById
+};
