@@ -20,12 +20,14 @@ const validateSchema = async (data) => {
 
 const findOneById = async (id) => {
   try {
-    const result = await getDB().collection(columnCollectionName).findOne({ _id: ObjectId(id)})
-    return result
+    const result = await getDB()
+      .collection(columnCollectionName)
+      .findOne({ _id: ObjectId(id) });
+    return result;
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
-}
+};
 
 const createNew = async (data) => {
   try {
@@ -33,8 +35,7 @@ const createNew = async (data) => {
     const insertValue = {
       ...validatedValue,
       boardId: ObjectId(validatedValue.boardId),
-      columnId: ObjectId(validatedValue.columnId),
-
+      // columnId: ObjectId(validatedValue.columnId),
     };
 
     const result = await getDB()
@@ -69,7 +70,7 @@ const pushCardOrder = async (columnId, cardId) => {
       .findOneAndUpdate(
         { _id: columnId },
         { $push: { cardOrder: cardId } },
-        { returnDocument: 'after'}
+        { returnDocument: "after" }
       );
     return result.value;
   } catch (error) {
@@ -80,16 +81,14 @@ const pushCardOrder = async (columnId, cardId) => {
 const update = async (id, data) => {
   try {
     const updateData = { ...data };
-    if (data.boardId) {
-      updateData.boardId = ObjectId(data.boardId);
-    }
+    if (data.boardId) updateData.boardId = ObjectId(data.boardId);
 
     const result = await getDB()
       .collection(columnCollectionName)
       .findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: updateData },
-        { returnDocument: 'after'}
+        { returnDocument: "after" }
       );
     return result.value;
   } catch (error) {

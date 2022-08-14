@@ -94,7 +94,6 @@ const update = async (id, data) => {
 
 export const CardModel = { 
   createNew, 
-  // getCardId, 
   cardCollectionName, 
   deleteMany, 
   update,

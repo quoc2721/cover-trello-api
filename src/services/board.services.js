@@ -14,13 +14,13 @@ const craeteNew = async (data) => {
 const getFullBoard = async (boardId ) => {
   try {
     const board = await BoardModel.getFullBoard(boardId );
-
+  
     if(!board || !board.columns) {
       throw new Error("Board not Found!")
     }
 
     // const transformBoard = cloneDeep(board)
-
+    // console.log(transformBoard)
     // transformBoard.columns = transformBoard.columns.filter(column => !column._destroy)
 
     // transformBoard.columns.forEach(column => {
@@ -31,9 +31,11 @@ const getFullBoard = async (boardId ) => {
       column.cards = board.cards.filter(c => c.columnId.toString() === column._id.toString())
     })
     // Remove card data from boards
+    // console.log(transformBoard)
     delete board.cards
     return board;
   } catch (error) {
+    // console.log(error)
     throw new Error(error);
   }
 };
